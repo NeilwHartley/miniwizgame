@@ -6,7 +6,7 @@ function test () {
 
 	console.assert(character instanceof Character);
 	console.assert(character.level === 5);
-	console.assert(character.getAttackStat() === 5);
+	console.assert(character.getStrengthStat() === 5);
 	console.assert(character.getCurrentHP() === character.getMaxHPStat());
 
 
@@ -15,7 +15,10 @@ function test () {
 	console.log("MaxHP:" + character.getMaxHPStat());
 	console.assert(character.getCurrentHP() === character.getMaxHPStat());
 
+	console.log(character.getStatisticsString());
 
+	const character2 = new Character(10);
+	character.attack(character2);
 
 	console.log(character.getStatisticsString());
 }

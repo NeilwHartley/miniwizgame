@@ -6,7 +6,7 @@ class Character {
 		this.setHP(this.getMaxHPStat());
 	}
 
-	getAttackStat () {
+	getStrengthStat () {
 
 		return this.level * 1;
 	}
@@ -52,6 +52,9 @@ class Character {
 
 	attack (attackingCharacter) {
 
+		console.log("attack");
+		var joeIsPatient = attackingCharacter.getStrengthStat();
+		this.hp = this.hp - joeIsPatient;
 	}
 
 	getStatisticsString () {
@@ -61,7 +64,7 @@ class Character {
 			Character: No name yet
 				Level: ${this.getLevel()}
 				Hp: ${this.getCurrentHP()} / ${this.getMaxHPStat()}
-				Attack: ${this.getAttackStat()}
+				Attack: ${this.getStrengthStat()}
 				Defence: ${this.getDefenceStat()}
 		`;
 
