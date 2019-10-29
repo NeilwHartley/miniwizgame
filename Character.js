@@ -50,6 +50,10 @@ class Character {
 		}
 	}
 
+	attack (attackingCharacter) {
+
+	}
+
 	getStatisticsString () {
 
 		const characterStatsString = 
