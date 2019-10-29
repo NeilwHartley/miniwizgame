@@ -6,6 +6,15 @@ class Character {
 		this.setHP(this.getMaxHPStat());
 	}
 
+	setName(name) {
+
+		this.name = name;
+	}
+
+	getName() {
+		return this.name;
+	}
+
 	getStrengthStat () {
 
 		return this.level * 1;
@@ -57,11 +66,19 @@ class Character {
 		this.hp = this.hp - attackDamage;
 	}
 
+	heal (healingCharacter) {
+		console.log("heal");
+		var healValue = healingCharacter.getStrengthStat() * 0.2;
+		this.hp = this.hp + healValue;
+		var newHP = this.hp
+		this.setHP(newHP);
+	}
+
 	getStatisticsString () {
 
 		const characterStatsString = 
 		`
-			Character: No name yet
+			Character: ${this.getName()}
 				Level: ${this.getLevel()}
 				Hp: ${this.getCurrentHP()} / ${this.getMaxHPStat()}
 				Attack: ${this.getStrengthStat()}
