@@ -1,7 +1,8 @@
 class Character {
 
-	constructor () {
+	constructor (level) {
 
+		this.level = level;
 	}
 
 	getAttackStat () {
@@ -19,3 +20,5 @@ class Character {
 		return level * 15;
 	}
 }
+
+Character.prototype.level = null;
