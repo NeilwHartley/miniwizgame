@@ -2,8 +2,8 @@ class Character {
 
 	constructor (level) {
 
-		this.level = level;
-		this.hp = this.getMaxHPStat();
+		this.setLevel(level);
+		this.setHP(this.getMaxHPStat());
 	}
 
 	getAttackStat () {
@@ -29,6 +29,16 @@ class Character {
 	getLevel () {
 
 		return this.level;
+	}
+
+	setLevel (level) {
+
+		this.level = level;
+	}
+
+	setHP (hp) {
+
+		this.hp = hp;
 	}
 
 	getStatisticsString () {
