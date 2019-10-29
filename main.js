@@ -1,6 +1,7 @@
 window.onload = function () {
 
 	console.log("load");
+	test();
 	main();
 }
 
