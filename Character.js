@@ -38,7 +38,16 @@ class Character {
 
 	setHP (hp) {
 
-		this.hp = hp;
+		const maxHP = this.getMaxHPStat();
+
+		if (hp > maxHP) {
+
+			this.hp = maxHP;
+		
+		} else {
+
+			this.hp = hp;
+		}
 	}
 
 	getStatisticsString () {
