@@ -22,8 +22,27 @@ class Character {
 	}
 
 	getCurrentHP () {
-		
+
 		return this.hp;
+	}
+
+	getLevel () {
+
+		return this.level;
+	}
+
+	getStatisticsString () {
+
+		const characterStatsString = 
+		`
+			Character: No name yet
+				Level: ${this.getLevel()}
+				Hp: ${this.getCurrentHP()} / ${this.getMaxHPStat()}
+				Attack: ${this.getAttackStat()}
+				Defence: ${this.getDefenceStat()}
+		`;
+
+		return characterStatsString;
 	}
 }
 
