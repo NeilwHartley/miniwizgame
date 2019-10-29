@@ -53,8 +53,8 @@ class Character {
 	attack (attackingCharacter) {
 
 		console.log("attack");
-		var joeIsPatient = attackingCharacter.getStrengthStat();
-		this.hp = this.hp - joeIsPatient;
+		var attackDamage = attackingCharacter.getStrengthStat() - this.getDefenceStat();
+		this.hp = this.hp - attackDamage;
 	}
 
 	getStatisticsString () {
