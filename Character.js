@@ -3,6 +3,7 @@ class Character {
 	constructor (level) {
 
 		this.level = level;
+		this.hp = this.getMaxHPStat();
 	}
 
 	getAttackStat () {
@@ -19,6 +20,12 @@ class Character {
 
 		return this.level * 15;
 	}
+
+	getCurrentHP () {
+		
+		return this.hp;
+	}
 }
 
 Character.prototype.level = null;
+Character.prototype.hp = null;

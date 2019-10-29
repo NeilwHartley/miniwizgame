@@ -7,4 +7,5 @@ function test () {
 	console.assert(character instanceof Character);
 	console.assert(character.level === 5);
 	console.assert(character.getAttackStat() === 5);
+	console.assert(character.getCurrentHP() === character.getMaxHPStat());
 }
