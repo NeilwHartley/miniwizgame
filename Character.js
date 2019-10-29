@@ -69,8 +69,7 @@ class Character {
 	heal (healingCharacter) {
 		console.log("heal");
 		var healValue = healingCharacter.getStrengthStat() * 0.2;
-		this.hp = this.hp + healValue;
-		var newHP = this.hp
+		var newHP = this.hp + healValue;
 		this.setHP(newHP);
 	}
 
