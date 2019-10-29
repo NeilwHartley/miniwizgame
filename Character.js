@@ -7,17 +7,17 @@ class Character {
 
 	getAttackStat () {
 
-		return level * 1;
+		return this.level * 1;
 	}
 
 	getDefenceStat () {
 		
-		return level * 0.75;
+		return this.level * 0.75;
 	}
 
 	getMaxHPStat () {
 
-		return level * 15;
+		return this.level * 15;
 	}
 }
 
