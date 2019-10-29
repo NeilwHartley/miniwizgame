@@ -4,12 +4,18 @@ class Character {
 
 	}
 
-	getGeneralStatisticsBasedOnLevel (level) {
+	getAttackStat () {
 
-		return {
-			hp: level * 15,
-			attack: level * 1,
-			defence: level * 0.75
-		}
+		return level * 1;
+	}
+
+	getDefenceStat () {
+		
+		return level * 0.75;
+	}
+
+	getMaxHPStat () {
+
+		return level * 15;
 	}
 }
