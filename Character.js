@@ -2,9 +2,8 @@ class Character {
 
 	constructor () {
 
-		this.setHP(this.getMaxHPStat());
 		this.setExp(0);
-
+		this.setHP(this.getMaxHPStat());
 	}
 
 	setExp (exp) {
@@ -12,7 +11,7 @@ class Character {
 		this.exp = exp;
 	}
 
-	increaseExp(inc) {
+	increaseExp (inc) {
 
 		this.setExp(this.getExp() + inc);
 	}
@@ -43,7 +42,7 @@ class Character {
 	}
 
 	getMaxHPStat () {
-		
+
 		return this.getLevel() * Character.hpMulti;
 
 	}
