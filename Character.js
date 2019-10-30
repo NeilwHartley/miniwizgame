@@ -8,7 +8,7 @@ class Character {
 
 	setExp(attackDamage) {
 
-		this.exp = attackDamage;
+		this.exp = this.exp + attackDamage;
 	}
 
 	getExp() {
@@ -56,6 +56,12 @@ class Character {
 		this.level = level;
 	}
 
+	increaseLevel() {
+
+		this.setLevel(Math.ceil(this.getExp() / 10));
+		this.setHP(this.getMaxHPStat());
+	}
+
 	setHP (hp) {
 
 		const maxHP = this.getMaxHPStat();
@@ -76,6 +82,7 @@ class Character {
 		var attackDamage = attackingCharacter.getStrengthStat() - this.getDefenceStat();
 		this.hp = this.hp - attackDamage;
 		attackingCharacter.setExp(attackDamage);
+		attackingCharacter.increaseLevel();
 	}
 
 	heal (healingCharacter) {
