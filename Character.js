@@ -6,10 +6,9 @@ class Character {
 		this.setHP(this.getMaxHPStat());
 	}
 
-	setExp(attackingCharacter, attackDamage) {
+	setExp(attackDamage) {
 
-		attackingCharacter.exp = attackingCharacter.exp + attackDamage;
-
+		this.exp = attackDamage;
 	}
 
 	getExp() {
@@ -76,7 +75,7 @@ class Character {
 		console.log("attack");
 		var attackDamage = attackingCharacter.getStrengthStat() - this.getDefenceStat();
 		this.hp = this.hp - attackDamage;
-		attackingCharacter.setExp(attackingCharacter, attackDamage);
+		attackingCharacter.setExp(attackDamage);
 	}
 
 	heal (healingCharacter) {
@@ -92,8 +91,8 @@ class Character {
 		`
 			Character: ${this.getName()}
 				Level: ${this.getLevel()}
-				Hp: ${this.getCurrentHP()} / ${this.getMaxHPStat()}
-				Attack: ${this.getStrengthStat()}
+				HP: ${this.getCurrentHP()} / ${this.getMaxHPStat()}
+				Strength: ${this.getStrengthStat()}
 				Defence: ${this.getDefenceStat()}
 				Exp: ${this.getExp()}
 		`;

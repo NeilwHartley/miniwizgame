@@ -3,6 +3,7 @@ function test () {
 	console.log("test");
 
 	const character = new Character(5);
+	character.setName("Joe");
 
 	console.assert(character instanceof Character);
 	console.assert(character.level === 5);
@@ -15,11 +16,12 @@ function test () {
 	console.log("MaxHP:" + character.getMaxHPStat());
 	console.assert(character.getCurrentHP() === character.getMaxHPStat());
 
-	console.log(character.getStatisticsString());
-
-	character.setName("Joe");
 
 	const character2 = new Character(10);
+	character2.setName("Neil");
+
+	console.log(character.getStatisticsString());
+
 	character.attack(character2);
 
 	console.log(character.getStatisticsString());
@@ -28,5 +30,5 @@ function test () {
 	console.assert(character.getCurrentHP() <= character.getMaxHPStat());
 
 	console.log(character.getStatisticsString());
-	console.log(character2.getExp());
+	console.log(character2.getStatisticsString());
 }
