@@ -28,4 +28,5 @@ function test () {
 	console.assert(character.getCurrentHP() <= character.getMaxHPStat());
 
 	console.log(character.getStatisticsString());
+	console.log(character2.getExp());
 }
