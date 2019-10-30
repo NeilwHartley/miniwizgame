@@ -11,7 +11,7 @@ function test () {
 	console.assert(character.getCurrentHP() === character.getMaxHPStat());
 
 
-	character.setHP(200)
+	//character.setHP(200);
 	console.log("CurrentHP:" + character.getCurrentHP());
 	console.log("MaxHP:" + character.getMaxHPStat());
 	console.assert(character.getCurrentHP() === character.getMaxHPStat());
