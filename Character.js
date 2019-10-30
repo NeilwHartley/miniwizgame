@@ -59,7 +59,6 @@ class Character {
 	increaseLevel() {
 
 		this.setLevel(Math.ceil(this.getExp() / 10));
-		this.setHP(this.getMaxHPStat());
 	}
 
 	setHP (hp) {
