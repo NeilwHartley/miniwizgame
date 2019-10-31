@@ -7,6 +7,7 @@ class Character {
 	static expDivider = 10;
 	currenthp = null;
 	exp = null;
+	name = null;
 
 	constructor () {
 
@@ -104,7 +105,7 @@ class Character {
 
 		const characterStatsString = 
 		`
-			Character: ${this.Name}
+			Character: ${this.name}
 				Level: ${this.level}
 				HP: ${this.currenthp} / ${this.maxhpStat}
 				Strength: ${this.strengthStat}
@@ -113,6 +114,20 @@ class Character {
 		`;
 
 		return characterStatsString;
+	}
+
+	getHTMLString () {
+
+		return `
+
+			<div class="character">
+				<p>${this.name}</p>
+				<p>HP: ${this.currenthp} / ${this.maxhpStat}</p>
+				<p>Strength: ${this.strengthStat}</p>
+				<p>Defence: ${this.defenceStat}</p>
+				<p>Lv: ${this.level}</p>
+			</div>
+		`
 	}
 }
 

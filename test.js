@@ -3,7 +3,7 @@ function test () {
 	console.log("test");
 
 	const character = new Character(1);
-	character.Name = "Joe";
+	character.name = "Joe";
 
 	console.assert(character instanceof Character);
 	//console.assert(character.level === 1);
@@ -18,7 +18,7 @@ function test () {
 
 
 	const character2 = new Character(1);
-	character2.Name = "Neil";
+	character2.name = "Neil";
 
 	console.log(character.getStatisticsString());
 
@@ -78,4 +78,6 @@ function test () {
 		character.attack(character2);
 	
 	console.log(character2.getStatisticsString());
+
+	document.body.innerHTML = character2.getHTMLString();
 }
