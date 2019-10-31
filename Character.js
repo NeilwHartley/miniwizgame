@@ -1,15 +1,17 @@
 class Character {
 
-		static strengthMulti = 1;
-		static defenceMulti = 0.75;
-		static hpMulti = 15;
-		hp = null;
-		exp = null;
+	static strengthMulti = 1;
+	static defenceMulti = 0.75;
+	static hpMulti = 15;
+	static healMulti = 0.2;
+	static expDivider = 10;
+	currenthp = null;
+	exp = null;
 
 	constructor () {
 
 		this.exp = 0;
-		this.hp = this.maxhpStat;
+		this.currenthp = this.maxhpStat;
 	}
 
 	set exp (exp) {
@@ -66,20 +68,20 @@ class Character {
 
 		} else {
 
-			return (Math.ceil(this.exp / 10)); 
+			return (Math.ceil(this.exp / Character.expDivider)); 
 		}
-}
-	set hp (hp) {
+	}
+	set currenthp (hp) {
 
 		const maxhp = this.maxhpStat;
 
 		if (hp > maxhp) {
 
-			this.hp = maxhp;
+			this.currenthp = maxhp;
 		
 		} else {
 
-			this.hp = hp;
+			this.currenthp = hp;
 		}
 	}
 
@@ -87,15 +89,15 @@ class Character {
 
 		console.log("attack");
 		var attackDamage = attackingCharacter.strengthStat - this.defenceStat;
-		this.hp = (this.currenthp - attackDamage);
+		this.currenthp = (this.currenthp - attackDamage);
 		attackingCharacter.increaseExp(attackDamage);
 	}
 
 	heal (healingCharacter) {
 		console.log("heal");
-		var healValue = healingCharacter.strengthStat * 0.2;
+		var healValue = healingCharacter.strengthStat * Character.healMulti;
 		var newhp = this.currenthp + healValue;
-		this.hp = newhp;
+		this.currenthp = newhp;
 	}
 
 	getStatisticsString () {
