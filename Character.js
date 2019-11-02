@@ -5,76 +5,75 @@ class Character {
 	static hpMulti = 15;
 	static healMulti = 0.2;
 	static expDivider = 10;
-	currenthp = null;
-	exp = null;
-	name = null;
+
 
 	constructor () {
 
-		this.exp = 0;
-		this.currenthp = this.maxhpStat;
+		this.setExp(0);
+		this.setCurrenthp(this.getMaxhpStat());
 	}
 
-	set exp (exp) {
+	setExp (exp) {
 
 		this.exp = exp;
 	}
 
 	increaseExp (inc) {
 
-		this.exp = (this.exp + inc);
+		this.setExp(this.getExp() + inc);
 	}
 
-	get exp () {
+	getExp () {
 
 		return this.exp;
 	}
 
-	set name (name) {
+	setName (name) {
 
 		this.name = name;
 	}
 
-	get name () {
+	getName () {
 
 		return this.name;
 	}
 
-	get strengthStat () {
+	getStrengthStat () {
 
-		return this.level * Character.strengthMulti;
+		return this.getLevel() * Character.strengthMulti;
 	}
 
-	get defenceStat () {
+	getDefenceStat () {
 		
-		return this.level * Character.defenceMulti;;
+		return this.getLevel() * Character.defenceMulti;;
 	}
 
-	get maxhpStat () {
+	getMaxhpStat () {
 
-		return this.level * Character.hpMulti;
+		return this.getLevel() * Character.hpMulti;
 
 	}
 
-	get currenthp () {
+	getCurrenthp () {
 
-		return this.hp;
+		return this.currenthp;
 	}
 
-	get level () {
+	getLevel () {
 
-		if (this.exp == 0) {
+		if (this.getExp() == 0) {
 
 			return 1;
 
 		} else {
 
-			return (Math.ceil(this.exp / Character.expDivider)); 
+			return (Math.ceil(this.getExp() / Character.expDivider)); 
 		}
 	}
-	set currenthp (hp) {
 
-		const maxhp = this.maxhpStat;
+	setCurrenthp (hp) {
+
+		const maxhp = this.getMaxhpStat();
 
 		if (hp > maxhp) {
 
@@ -89,28 +88,28 @@ class Character {
 	attack (attackingCharacter) {
 
 		console.log("attack");
-		var attackDamage = attackingCharacter.strengthStat - this.defenceStat;
-		this.currenthp = (this.currenthp - attackDamage);
+		var attackDamage = attackingCharacter.getStrengthStat() - this.getDefenceStat();
+		this.setCurrenthp((this.getCurrenthp() - attackDamage));
 		attackingCharacter.increaseExp(attackDamage);
 	}
 
 	heal (healingCharacter) {
 		console.log("heal");
-		var healValue = healingCharacter.strengthStat * Character.healMulti;
-		var newhp = this.currenthp + healValue;
-		this.currenthp = newhp;
+		var healValue = healingCharacter.getStrengthStat() * Character.healMulti;
+		var newhp = this.getCurrenthp() + healValue;
+		this.setCurrenthp(newhp);
 	}
 
 	getStatisticsString () {
 
 		const characterStatsString = 
 		`
-			Character: ${this.name}
-				Level: ${this.level}
-				HP: ${this.currenthp} / ${this.maxhpStat}
-				Strength: ${this.strengthStat}
-				Defence: ${this.defenceStat}
-				Exp: ${this.exp}
+			Character: ${this.getName()}
+				Level: ${this.getLevel()}
+				HP: ${this.getCurrenthp()} / ${this.getMaxhpStat()}
+				Strength: ${this.getStrengthStat()}
+				Defence: ${this.getDefenceStat()}
+				Exp: ${this.getExp()}
 		`;
 
 		return characterStatsString;
@@ -121,15 +120,17 @@ class Character {
 		return `
 
 			<div class="character">
-				<p>${this.name}</p>
-				<p>HP: ${this.currenthp} / ${this.maxhpStat}</p>
-				<p>Strength: ${this.strengthStat}</p>
-				<p>Defence: ${this.defenceStat}</p>
-				<p>Lv: ${this.level}</p>
+				<p>${this.getName()}</p>
+				<p>HP: ${this.getCurrenthp()} / ${this.getMaxhpStat()}</p>
+				<p>Strength: ${this.getStrengthStat()}</p>
+				<p>Defence: ${this.getDefenceStat()}</p>
+				<p>Lv: ${this.getLevel()}</p>
 			</div>
 		`
 	}
 }
 
-
+	Character.prototype.currenthp = null;
+	Character.prototype.exp = null;
+	Character.prototype.name = null;
 
