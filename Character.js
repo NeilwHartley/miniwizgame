@@ -88,15 +88,15 @@ class Character {
 	attack (attackingCharacter) {
 
 		console.log("attack");
-		var attackDamage = attackingCharacter.getStrengthStat() - this.getDefenceStat();
-		this.setCurrenthp((this.getCurrenthp() - attackDamage));
+		let attackDamage = attackingCharacter.getStrengthStat() - this.getDefenceStat();
+		this.setCurrenthp(this.getCurrenthp() - attackDamage);
 		attackingCharacter.increaseExp(attackDamage);
 	}
 
 	heal (healingCharacter) {
 		console.log("heal");
-		var healValue = healingCharacter.getStrengthStat() * Character.healMulti;
-		var newhp = this.getCurrenthp() + healValue;
+		let healValue = healingCharacter.getStrengthStat() * Character.healMulti;
+		let newhp = this.getCurrenthp() + healValue;
 		this.setCurrenthp(newhp);
 	}
 
@@ -115,17 +115,14 @@ class Character {
 		return characterStatsString;
 	}
 
-	getHTMLString () {
+	getPlayerStatisticsHTML () {
 
 		return `
-
-			<div class="character">
 				<p>${this.getName()}</p>
 				<p>HP: ${this.getCurrenthp()} / ${this.getMaxhpStat()}</p>
 				<p>Strength: ${this.getStrengthStat()}</p>
 				<p>Defence: ${this.getDefenceStat()}</p>
 				<p>Lv: ${this.getLevel()}</p>
-			</div>
 		`
 	}
 }

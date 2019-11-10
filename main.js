@@ -1,7 +1,7 @@
 window.onload = function () {
 
 	console.log("load");
-	test();
+	//test();
 	main();
 }
 
