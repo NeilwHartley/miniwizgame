@@ -20,44 +20,51 @@ function createGame () {
 
 	document.getElementById("controlsContainer").innerHTML = newGame.getAttackButtonHTML();
 
-	updatePlayer1Statistics(newGame.getPlayer(player1Name));
-	updatePlayer2Statistics(newGame.getPlayer(player2Name));
-	updatePlayer3Statistics(newGame.getPlayer("Dragon"));
+	updatePlayerStatisticsIcons(newGame.getPlayer(player1Name), newGame.getPlayer(player2Name));
+	//updatePlayer2Statistics(newGame.getPlayer(player2Name));
+	updatePlayer3StatisticsIcon(newGame.getPlayer("Dragon"));
 
 	//document.getElementById("attackButton").addEventListener("click", newGame.attack.bind(newGame));
 	//Numerous forums say using onclick is not good and eventListener should be used instead?
 }
 
-function updatePlayer1Statistics (player) {
+const updatePlayerStatisticsIcons = function (player, player2) {
 
 	document.getElementById("player1").innerHTML = player.getPlayerStatisticsHTML();
 
+	document.getElementById("player2").innerHTML = player2.getPlayerStatisticsHTML();
 }
 
-function updatePlayer2Statistics (player) {
+newGame.setWhenPlayerStatsUpdateCallback(updatePlayerStatisticsIcons);
 
-	document.getElementById("player2").innerHTML = player.getPlayerStatisticsHTML();
-
-}
-
-function updatePlayer3Statistics (player) {
+const updatePlayer3StatisticsIcon = function (player) {
 
 	document.getElementById("player3").innerHTML = player.getPlayerStatisticsHTML();
 
 }
 
-function updateGameLogWithCurrentPlayerTurn () {
+const updateGameLogWithAttackDetails = function () {
 
-	let x = document.getElementById("gameLog").innerHTML;
-	document.getElementById("gameLog").innerHTML = (x + newGame.getCurrentPlayerTurnHTML());
+	document.getElementById("gameLog").innerHTML = 
+	(document.getElementById("gameLog").innerHTML + newGame.getAttackDetailsHTML());
 }
 
-function updateGamelogWithAttackDetails () {
+newGame.setWhenPlayerAttacksCallback(updateGameLogWithAttackDetails)
 
-	let x = document.getElementById("gameLog").innerHTML;
-	document.getElementById("gameLog").innerHTML = (x + newGame.getAttackDetailsHTML());
+const updateGameLogWithCurrentPlayerTurn = function () {
+	document.getElementById("gameLog").innerHTML = 
+	(document.getElementById("gameLog").innerHTML + newGame.getCurrentPlayerTurnHTML());
+
 }
 
+newGame.setWhenCurrentPlayerChangesCallback(updateGameLogWithCurrentPlayerTurn);
+
+/*function updateGameLogWithAttackDetails () {
+
+	document.getElementById("gameLog").innerHTML = 
+	(document.getElementById("gameLog").innerHTML + newGame.getAttackDetailsHTML());
+}
+*/
 
 
 function test () {

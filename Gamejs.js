@@ -2,6 +2,9 @@ class Game {
 
 	i = 0;
 	current = 0;
+	whenPlayerStatsUpdate = null;
+	whenCurrentPlayerChanges = null;
+	whenPlayerAttacks = null;
 
 	constructor () {
 
@@ -16,6 +19,21 @@ class Game {
 		this.playerList.push(new Character());
 	}
 	*/
+
+	setWhenPlayerStatsUpdateCallback (callback) {
+
+		this.whenPlayerStatsUpdate = callback;
+	}
+
+	setWhenCurrentPlayerChangesCallback (callback) {
+
+		this.whenCurrentPlayerChanges = callback;
+	}
+
+	setWhenPlayerAttacksCallback (callback) {
+
+		this.whenPlayerAttacks = callback;
+	}
 
 	setPlayerName (name) {
 
@@ -48,8 +66,7 @@ class Game {
 			this.current = 0;
 		}
 		
-		updateGameLogWithCurrentPlayerTurn();
-		this.updatePlayerStats(this.getCurrentPlayer(this.current));
+		//this.updatePlayerStats(this.getCurrentPlayer(this.current));
 	}
 
 	getCurrentPlayer (index) {
@@ -59,22 +76,25 @@ class Game {
 			
 	}
 
-	updatePlayerStats (currentPlayer) {
+	updatePlayerIcons () {
 
-		console.log("I'm tiiiiireeddd");
+		this.whenPlayerStatsUpdate(this.getCurrentPlayer(0), this.getCurrentPlayer(1));
 	}
 
 	attack () {
 
 		console.log("attack");
 
-		let attacker = this.playerList[this.current];
+		let attacker = this.getCurrentPlayer(this.current);
 
-		this.playerList[2].attack(attacker);
+		this.playerList[2].attack(attacker); //Only attacks Dragon for test purpose
 
-		updateGamelogWithAttackDetails();
-
+		this.whenPlayerAttacks();
+		this.updatePlayerIcons();
 		this.controlTurn();
+		this.whenCurrentPlayerChanges()
+
+		
 	}
 
 	getPlayerIconsHTML () {
@@ -95,14 +115,16 @@ class Game {
  		<div id="gameLogContainer">
  		<ol id="gameLog"></ol>
  		</div>
- 		<div id="controlsContainer"></div>
- 		<div id="optionsContainer"></div>
  		</div>
  		<div id="playerIconContainer">
 		<div id="player1" class="playerIcon"></div>
 		<div id="player2" class="playerIcon"></div>
 		<div id="player3" class="playerIcon"></div>
 		</div>
+		<div id="buttonContainer">
+		<div id="controlsContainer"></div>
+ 		<div id="optionsContainer"></div>
+ 		</div>
  		`
  	}
 

@@ -34,7 +34,6 @@
 
 #gameLogContainer {
 
-	position: absolute;
 	width: 100%;
 	bottom: 350px;
 	border: solid;
@@ -46,6 +45,15 @@
 	border: solid;
 	border-color: green;
 	
+}
+
+#buttonContainer {
+
+	border: solid;
+	border-color: teal;
+	position: absolute;
+	top: 250px;
+	right: 600px;
 }
 
 #controlsContainer {
