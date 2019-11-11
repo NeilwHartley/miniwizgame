@@ -24,8 +24,7 @@ function createGame () {
 	//updatePlayer2Statistics(newGame.getPlayer(player2Name));
 	updatePlayer3StatisticsIcon(newGame.getPlayer("Dragon"));
 
-	//document.getElementById("attackButton").addEventListener("click", newGame.attack.bind(newGame));
-	//Numerous forums say using onclick is not good and eventListener should be used instead?
+	document.getElementById("attackButton").onclick = newGame.attack.bind(newGame);
 }
 
 const updatePlayerStatisticsIcons = function (player, player2) {

@@ -85,12 +85,20 @@ class Character {
 		}
 	}
 
+
+	calculateAttackDamage (attackingCharacter) {
+
+		let attackDamage = attackingCharacter.getStrengthStat() - this.getDefenceStat();
+		return attackDamage;
+	}
+
+
 	attack (attackingCharacter) {
 
 		console.log("attack");
-		let attackDamage = attackingCharacter.getStrengthStat() - this.getDefenceStat();
-		this.setCurrenthp(this.getCurrenthp() - attackDamage);
-		attackingCharacter.increaseExp(attackDamage);
+		//let attackDamage = attackingCharacter.getStrengthStat() - this.getDefenceStat();
+		this.setCurrenthp(this.getCurrenthp() - this.calculateAttackDamage(attackingCharacter));
+		attackingCharacter.increaseExp(this.calculateAttackDamage(attackingCharacter));
 	}
 
 	heal (healingCharacter) {

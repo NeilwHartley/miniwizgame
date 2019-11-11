@@ -1,8 +1,9 @@
 class Game {
 
-	//Havent declared playerList
+	playerList = null;
 	i = 0;	// Far too generic a name for a class variable - what does it represent?
-	current = 0; // Too generic a name for a class variable - what does it represent?
+	//**** may not be needed.
+	currentPlayerIndex = 0;
 	whenPlayerStatsUpdate = null;
 	whenCurrentPlayerChanges = null;
 	whenPlayerAttacks = null;
@@ -13,6 +14,8 @@ class Game {
 		this.playerList = [];
 		//You will always create and push two character at the start of every concievable game?
 		// Thats a bit too restrictive I think... maybe we should pass the characters in as arguments to the constructor.
+		//**** I don't see how that solves the issue of forcing two characters being created?
+		//**** Also idea is always 2 characters. unbound enemies
 		this.playerList.push(new Character());
 		this.playerList.push(new Character());
 	}
@@ -49,6 +52,7 @@ class Game {
 			if you rework the way that constructor handles the characters tho, because there are issues there i think too, this may not be necessary.
 		*/
 
+		//**** I agree this is hooky, will look at after constructor.
 		this.playerList[this.i].setName(name);
 		console.log(this.playerList[this.i]);
 		this.i++;
@@ -65,7 +69,8 @@ class Game {
 		}
 	}
 
-	//Im ok with this for now, can be build upon.
+	//Im ok with this for now, can be built upon.
+	//**** I'm not ok with it really. I don't think enemies should go in the same list.
 	createEnemy () {
 
 		this.playerList.push(new Character());
@@ -73,14 +78,13 @@ class Game {
 
 	controlTurn () {
 
-		this.getCurrentPlayer(this.current);
-		this.current++;
-		if (this.current > (this.playerList.length - 1)) {
-			this.current = 0;
+		this.getCurrentPlayer(this.currentPlayerIndex);
+		this.currentPlayerIndex++;
+		if (this.currentPlayerIndex > (this.playerList.length - 1)) {
+			this.currentPlayerIndex = 0;
 		}
 
-		//Im guessing you want to uncomment this?		
-		//this.updatePlayerStats(this.getCurrentPlayer(this.current));
+		this.whenPlayerStatsUpdate(this.getCurrentPlayer(0), this.getCurrentPlayer(1));
 	}
 
 	//Good.
@@ -94,6 +98,7 @@ class Game {
 	updatePlayerIcons () {
 
 		//This implementation assumes an importance of the first two players... too specific for an unbounded player list.
+		//**** Don't really want unbounded players. 2 players, unbounded enemies.
 		this.whenPlayerStatsUpdate(this.getCurrentPlayer(0), this.getCurrentPlayer(1));
 	}
 
@@ -101,7 +106,7 @@ class Game {
 
 		console.log("attack");
 
-		let attacker = this.getCurrentPlayer(this.current);
+		let attacker = this.getCurrentPlayer(this.currentPlayerIndex);
 
 		this.playerList[2].attack(attacker); //Only attacks Dragon for test purpose
 
@@ -147,17 +152,18 @@ class Game {
 
 	getAttackButtonHTML () {
 
-		//Hohoho javascript in a string. No thank you.
 		return `
-			<button id="attackButton" onclick="newGame.attack()">Attack!</button>
+			<button id="attackButton">Attack!</button>
 		`
 	}
 
 	getAttackDetailsHTML () {
 		//Youre doing battle specific calculations in a log method, we should probably abstract that calculation to Character somehow, maybe the attack method could return some results for what happened
 		//Or there could be another method in character specifically for calculating damage if there isnt already, and you can use that...
+
+		//**** Indeed. I have added a method in Character to return the attack damage. However can't amend below as dragon still in playerList.
 		return `
-		<li>${this.playerList[this.current].getName()} attacks ${this.playerList[2].getName()} for ${this.playerList[this.current].getStrengthStat() - this.playerList[2].getDefenceStat()} points. 
+		<li>${this.playerList[this.currentPlayerIndex].getName()} attacks ${this.playerList[2].getName()} for ${this.playerList[this.currentPlayerIndex].getStrengthStat() - this.playerList[2].getDefenceStat()} points. 
 		`
 	}
 
@@ -165,11 +171,7 @@ class Game {
 		
 		//Good
 		return `
-			<li>It's ${this.playerList[this.current].getName()}'s turn.</li>
+			<li>It's ${this.playerList[this.currentPlayerIndex].getName()}'s turn.</li>
 		`
 	} 
 }
-
-//You dont need these if youre declaring in the class
-Game.prototype.i = null;
-Game.prototype.current = null;
