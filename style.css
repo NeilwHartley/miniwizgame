@@ -1,5 +1,5 @@
 .character {
-	
+
 	width: 200px;
 	border: solid;	
 	text-align: center;
@@ -12,11 +12,15 @@
 	text-align: center;
 }
 
+body {
+
+	display: flex;
+}
+
 #playerIconContainer {
 
 	border: solid;
 	border-color: orange;
-	position: absolute;
 	right: 100px;
 	width: 600px;
 	display: grid;
@@ -25,7 +29,6 @@
 
 #container {
 
-	position: absolute;
 	width: 500px;
 	height: 500px;
 	border: solid;
@@ -50,7 +53,6 @@
 
 	border: solid;
 	border-color: teal;
-	position: absolute;
 	top: 250px;
 	right: 600px;
 }

@@ -5,10 +5,11 @@ class Character {
 	static hpMulti = 15;
 	static healMulti = 0.2;
 	static expDivider = 10;
+	name = null;
 
+	constructor (playerInput) {
 
-	constructor () {
-
+		this.name = playerInput;
 		this.setExp(0);
 		this.setCurrenthp(this.getMaxhpStat());
 	}

@@ -1,62 +1,85 @@
-const newGame = new Game(); //I expect you will tell me off for this
 
 function createGame () {
 
+	
 	const player1Name = document.getElementById("player1Input").value;
 	const player2Name = document.getElementById("player2Input").value;
+	const newGame = new Game(player1Name, player2Name);
+
+
+	const updatePlayer1StatisticsIcon = function (player1) {
+
+		document.getElementById("player1Icon").innerHTML = player1.getPlayerStatisticsHTML();
+	}
+	newGame.setWhenPlayer1StatsUpdateCallback(updatePlayer1StatisticsIcon);
+
+
+
+
+	const updatePlayer2StatisticsIcon = function (player2) {
+
+		document.getElementById("player2Icon").innerHTML = player2.getPlayerStatisticsHTML();
+	}
+	newGame.setWhenPlayer2StatsUpdateCallback(updatePlayer2StatisticsIcon);
+
+
+
+
+	const updateEnemyStatisticsIcon = function (enemy) {
+
+		document.getElementById("enemyIcon").innerHTML = enemy.getPlayerStatisticsHTML();
+	}
+	newGame.setWhenEnemyStatsUpdateCallback(updateEnemyStatisticsIcon);
+	
+
+
+
+	const updateGameLogWithCurrentPlayerTurn = function () {
+		document.getElementById("gameLog").innerHTML = 
+		(document.getElementById("gameLog").innerHTML + newGame.getCurrentPlayerTurnHTML());
+	}
+	newGame.setWhenCurrentPlayerChangesCallback(updateGameLogWithCurrentPlayerTurn);
+
+
+
+
+	const updateGameLogWithAttackDetails = function () {
+
+		document.getElementById("gameLog").innerHTML = 
+		(document.getElementById("gameLog").innerHTML + newGame.getAttackDetailsHTML());
+	}
+	newGame.setWhenPlayerAttacksCallback(updateGameLogWithAttackDetails);
+
+
+
+		newGame.createEnemy("Dragon");
+
+
 
 	
-	//const newGame = new Game();
-	//newGame.createPlayer();
-	newGame.setPlayerName(player1Name);
-	//newGame.createPlayer();
-	newGame.setPlayerName(player2Name);
-
-	newGame.createEnemy();
-	newGame.setPlayerName("Dragon");
-
 	document.body.innerHTML = newGame.getGameBuildHTML();
+
+
 	document.getElementById("gameLog").innerHTML = newGame.getCurrentPlayerTurnHTML();
 
 	document.getElementById("controlsContainer").innerHTML = newGame.getAttackButtonHTML();
 
-	updatePlayerStatisticsIcons(newGame.getPlayer(player1Name), newGame.getPlayer(player2Name));
-	//updatePlayer2Statistics(newGame.getPlayer(player2Name));
-	updatePlayer3StatisticsIcon(newGame.getPlayer("Dragon"));
-
 	document.getElementById("attackButton").onclick = newGame.attack.bind(newGame);
+
+newGame.updateCharacterIcons();
 }
 
-const updatePlayerStatisticsIcons = function (player, player2) {
 
-	document.getElementById("player1").innerHTML = player.getPlayerStatisticsHTML();
 
-	document.getElementById("player2").innerHTML = player2.getPlayerStatisticsHTML();
-}
 
-newGame.setWhenPlayerStatsUpdateCallback(updatePlayerStatisticsIcons);
 
-const updatePlayer3StatisticsIcon = function (player) {
 
-	document.getElementById("player3").innerHTML = player.getPlayerStatisticsHTML();
 
-}
 
-const updateGameLogWithAttackDetails = function () {
 
-	document.getElementById("gameLog").innerHTML = 
-	(document.getElementById("gameLog").innerHTML + newGame.getAttackDetailsHTML());
-}
 
-newGame.setWhenPlayerAttacksCallback(updateGameLogWithAttackDetails)
 
-const updateGameLogWithCurrentPlayerTurn = function () {
-	document.getElementById("gameLog").innerHTML = 
-	(document.getElementById("gameLog").innerHTML + newGame.getCurrentPlayerTurnHTML());
 
-}
-
-newGame.setWhenCurrentPlayerChangesCallback(updateGameLogWithCurrentPlayerTurn);
 
 /*function updateGameLogWithAttackDetails () {
 

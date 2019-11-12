@@ -1,34 +1,36 @@
 class Game {
 
-	playerList = null;
-	i = 0;	// Far too generic a name for a class variable - what does it represent?
-	//**** may not be needed.
-	currentPlayerIndex = 0;
-	whenPlayerStatsUpdate = null;
+	whenPlayer1StatsUpdate = null;
+	whenPlayer2StatsUpdate = null;
+	whenEnemyStatsUpdate = null;
 	whenCurrentPlayerChanges = null;
 	whenPlayerAttacks = null;
+	currentTurnPlayer = null;
+	enemy = null;
+	player1 = null;
+	player2 = null;
 
-	constructor () {
+	constructor (player1Input, player2Input) {
 
 		console.log("gameCreated");
-		this.playerList = [];
-		//You will always create and push two character at the start of every concievable game?
-		// Thats a bit too restrictive I think... maybe we should pass the characters in as arguments to the constructor.
-		//**** I don't see how that solves the issue of forcing two characters being created?
-		//**** Also idea is always 2 characters. unbound enemies
-		this.playerList.push(new Character());
-		this.playerList.push(new Character());
+		this.player1 = new Character(player1Input);
+		this.player2 = new Character(player2Input);
+		this.currentTurnPlayer = this.player1;
 	}
 
-	/* createPlayer () {
+	setWhenPlayer1StatsUpdateCallback (callback) {
 
-		this.playerList.push(new Character());
+		this.whenPlayer1StatsUpdate = callback;
 	}
-	*/
 
-	setWhenPlayerStatsUpdateCallback (callback) {
+	setWhenPlayer2StatsUpdateCallback (callback) {
 
-		this.whenPlayerStatsUpdate = callback;
+		this.whenPlayer2StatsUpdate = callback;
+	}
+
+	setWhenEnemyStatsUpdateCallback (callback) {
+
+		this.whenEnemyStatsUpdate = callback;
 	}
 
 	setWhenCurrentPlayerChangesCallback (callback) {
@@ -41,91 +43,50 @@ class Game {
 		this.whenPlayerAttacks = callback;
 	}
 
-	setPlayerName (name) {
+	createEnemy (enemyType) {
 
-		/*
-			This is a really hooky method.
-			We maintain a method specific cursor called i on the object to know which names weve set
-			on the characters?
-			I think we want to pass those names into the characters directly rather than have game deal with the names.
-			Character names are specific to character. Game shouldnt be touching them except maybe at creation (constructor)
-			if you rework the way that constructor handles the characters tho, because there are issues there i think too, this may not be necessary.
-		*/
-
-		//**** I agree this is hooky, will look at after constructor.
-		this.playerList[this.i].setName(name);
-		console.log(this.playerList[this.i]);
-		this.i++;
+		this.enemy = new Character(enemyType);
 	}
 
-	getPlayer (name) {
+	setCurrentTurnPlayer () {
 
-		for (let i=0; i<this.playerList.length; i++) {
-
-			if (this.playerList[i].name === name) {
-
-				return this.playerList[i];
-			}
+		if (this.getCurrentTurnPlayer() === this.player1) {
+			this.currentTurnPlayer = this.player2;
+		} else if (this.getCurrentTurnPlayer() === this.player2) {
+			this.currentTurnPlayer = this.enemy;
+		} else {
+			this.currentTurnPlayer = this.player1;
 		}
 	}
 
-	//Im ok with this for now, can be built upon.
-	//**** I'm not ok with it really. I don't think enemies should go in the same list.
-	createEnemy () {
+	getCurrentTurnPlayer () {
 
-		this.playerList.push(new Character());
+		return this.currentTurnPlayer;
 	}
 
-	controlTurn () {
+	updateCharacterIcons () {
 
-		this.getCurrentPlayer(this.currentPlayerIndex);
-		this.currentPlayerIndex++;
-		if (this.currentPlayerIndex > (this.playerList.length - 1)) {
-			this.currentPlayerIndex = 0;
-		}
-
-		this.whenPlayerStatsUpdate(this.getCurrentPlayer(0), this.getCurrentPlayer(1));
-	}
-
-	//Good.
-	getCurrentPlayer (index) {
-
-		console.log(this.playerList[index]);
-		return this.playerList[index];	
-			
-	}
-
-	updatePlayerIcons () {
-
-		//This implementation assumes an importance of the first two players... too specific for an unbounded player list.
-		//**** Don't really want unbounded players. 2 players, unbounded enemies.
-		this.whenPlayerStatsUpdate(this.getCurrentPlayer(0), this.getCurrentPlayer(1));
+		this.whenPlayer1StatsUpdate(this.player1);
+		this.whenPlayer2StatsUpdate(this.player2);
+		this.whenEnemyStatsUpdate(this.enemy);
 	}
 
 	attack () {
 
-		console.log("attack");
-
-		let attacker = this.getCurrentPlayer(this.currentPlayerIndex);
-
-		this.playerList[2].attack(attacker); //Only attacks Dragon for test purpose
-
-		//These look ok for now, except for updatePlayerIcons which looks a bit confused... 
+		this.enemy.attack(this.getCurrentTurnPlayer()); 
 		this.whenPlayerAttacks();
-		this.updatePlayerIcons();
-		this.controlTurn();
-		this.whenCurrentPlayerChanges()
-
-		
+		this.updateCharacterIcons();
+		this.setCurrentTurnPlayer();
+		this.whenCurrentPlayerChanges();
 	}
 
 	getPlayerIconsHTML () {
 
 		return `
 		<div id="playerIconContainer">
-		<div id="player1" class="playerIcon"></div>
-		<div id="player2" class="playerIcon"></div>
-		<div id="player3" class="playerIcon"></div>
+		<div id="player1Icon" class="playerIcon"></div>
+		<div id="player2Icon" class="playerIcon"></div>
+		<div id="enemyIcon" class="playerIcon"></div>
 		</div>
 		`
 	}
@@ -139,9 +100,9 @@ class Game {
  		</div>
  		</div>
  		<div id="playerIconContainer">
-		<div id="player1" class="playerIcon"></div>
-		<div id="player2" class="playerIcon"></div>
-		<div id="player3" class="playerIcon"></div>
+		<div id="player1Icon" class="playerIcon"></div>
+		<div id="player2Icon" class="playerIcon"></div>
+		<div id="enemyIcon" class="playerIcon"></div>
 		</div>
 		<div id="buttonContainer">
 		<div id="controlsContainer"></div>
@@ -163,15 +124,14 @@ class Game {
 
 		//**** Indeed. I have added a method in Character to return the attack damage. However can't amend below as dragon still in playerList.
 		return `
-		<li>${this.playerList[this.currentPlayerIndex].getName()} attacks ${this.playerList[2].getName()} for ${this.playerList[this.currentPlayerIndex].getStrengthStat() - this.playerList[2].getDefenceStat()} points. 
+		<li>${this.getCurrentTurnPlayer().getName()} attacks ${this.enemy.getName()} for ${this.enemy.calculateAttackDamage(this.getCurrentTurnPlayer())} points. 
 		`
 	}
 
 	getCurrentPlayerTurnHTML () {
 		
-		//Good
 		return `
-			<li>It's ${this.playerList[this.currentPlayerIndex].getName()}'s turn.</li>
+			<li>It's ${this.getCurrentTurnPlayer().getName()}'s turn.</li>
 		`
 	} 
 }
