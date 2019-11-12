@@ -43,16 +43,25 @@ function createGame () {
 
 
 
-	const updateGameLogWithAttackDetails = function () {
+	const updateGameLogWithPlayerAttackDetails = function () {
 
 		document.getElementById("gameLog").innerHTML = 
-		(document.getElementById("gameLog").innerHTML + newGame.getAttackDetailsHTML());
+		(document.getElementById("gameLog").innerHTML + newGame.getPlayerAttackDetailsHTML());
 	}
-	newGame.setWhenPlayerAttacksCallback(updateGameLogWithAttackDetails);
+	newGame.setWhenPlayerAttacksCallback(updateGameLogWithPlayerAttackDetails);
 
 
 
-		newGame.createEnemy("Dragon");
+
+	const updateGameLogWithEnemyAttackDetails = function () {
+
+		document.getElementById("gameLog").innerHTML = 
+		(document.getElementById("gameLog").innerHTML + newGame.getEnemyAttackDetailsHTML());
+	}
+	newGame.setWhenEnemyAttacksCallback(updateGameLogWithEnemyAttackDetails);
+
+
+	newGame.createEnemy("Dragon");
 
 
 
@@ -64,7 +73,7 @@ function createGame () {
 
 	document.getElementById("controlsContainer").innerHTML = newGame.getAttackButtonHTML();
 
-	document.getElementById("attackButton").onclick = newGame.attack.bind(newGame);
+	document.getElementById("attackButton").onclick = newGame.playerAttack.bind(newGame);
 
 newGame.updateCharacterIcons();
 }

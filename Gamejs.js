@@ -5,10 +5,12 @@ class Game {
 	whenEnemyStatsUpdate = null;
 	whenCurrentPlayerChanges = null;
 	whenPlayerAttacks = null;
+	whenEnemyAttacks = null;
 	currentTurnPlayer = null;
 	enemy = null;
 	player1 = null;
 	player2 = null;
+	whichPlayerToAttack = null;
 
 	constructor (player1Input, player2Input) {
 
@@ -43,9 +45,34 @@ class Game {
 		this.whenPlayerAttacks = callback;
 	}
 
+	setWhenEnemyAttacksCallback (callback) {
+
+		this.whenEnemyAttacks = callback;
+	}
+
+	setWhichPlayerToAttack () {
+
+		let rand = Math.random();
+		if (rand < 0.5) {
+			this.whichPlayerToAttack = this.player1;
+		} else {
+			this.whichPlayerToAttack = this.player2;
+		}
+	}
+
+	getWhichPlayerToAttack () {
+
+		return this.whichPlayerToAttack;
+	}
+
 	createEnemy (enemyType) {
 
 		this.enemy = new Character(enemyType);
+	}
+
+	getEnemy () {
+
+		return this.enemy;
 	}
 
 	setCurrentTurnPlayer () {
@@ -71,10 +98,27 @@ class Game {
 		this.whenEnemyStatsUpdate(this.enemy);
 	}
 
-	attack () {
+	playerAttack () {
 
-		this.enemy.attack(this.getCurrentTurnPlayer()); 
-		this.whenPlayerAttacks();
+		if (this.getCurrentTurnPlayer() != this.getEnemy()) {
+
+			this.enemy.attack(this.getCurrentTurnPlayer()); 
+			this.whenPlayerAttacks();
+			this.updateCharacterIcons();
+			this.setCurrentTurnPlayer();
+			this.whenCurrentPlayerChanges();
+		} else {
+
+			this.enemyAttack();
+		}
+	}
+
+	enemyAttack () {
+
+		this.setWhichPlayerToAttack();
+
+		this.getWhichPlayerToAttack().attack(this.getEnemy()); 
+		this.whenEnemyAttacks();
 		this.updateCharacterIcons();
 		this.setCurrentTurnPlayer();
 		this.whenCurrentPlayerChanges();
@@ -118,13 +162,17 @@ class Game {
 		`
 	}
 
-	getAttackDetailsHTML () {
-		//Youre doing battle specific calculations in a log method, we should probably abstract that calculation to Character somehow, maybe the attack method could return some results for what happened
-		//Or there could be another method in character specifically for calculating damage if there isnt already, and you can use that...
-
-		//**** Indeed. I have added a method in Character to return the attack damage. However can't amend below as dragon still in playerList.
+	getPlayerAttackDetailsHTML () {
+		
 		return `
-		<li>${this.getCurrentTurnPlayer().getName()} attacks ${this.enemy.getName()} for ${this.enemy.calculateAttackDamage(this.getCurrentTurnPlayer())} points. 
+		<li>${this.getCurrentTurnPlayer().getName()} attacks ${this.getEnemy().getName()} for ${this.getEnemy().calculateAttackDamage(this.getCurrentTurnPlayer())} points. 
+		`
+	}
+
+	getEnemyAttackDetailsHTML () {
+		
+		return `
+		<li>${this.getEnemy().getName()} attacks ${this.getWhichPlayerToAttack().getName()} for ${this.getWhichPlayerToAttack().calculateAttackDamage(this.getEnemy())} points. 
 		`
 	}
 
