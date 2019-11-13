@@ -6,18 +6,33 @@ class Game {
 	whenCurrentPlayerChanges = null;
 	whenPlayerAttacks = null;
 	whenEnemyAttacks = null;
+	whenPlayerHeals = null;
+	whenHealButtonClicked = null;
+	afterHealButtonClicked = null;
+	whenEnemyDies = null;
 	currentTurnPlayer = null;
 	enemy = null;
 	player1 = null;
 	player2 = null;
 	whichPlayerToAttack = null;
+	whichPlayertoHeal = null;
 
 	constructor (player1Input, player2Input) {
 
 		console.log("gameCreated");
 		this.player1 = new Character(player1Input);
 		this.player2 = new Character(player2Input);
-		this.currentTurnPlayer = this.player1;
+		this.currentTurnPlayer = this.getPlayer1();
+	}
+
+	getPlayer1 () {
+
+		return this.player1;
+	}
+
+	getPlayer2 () {
+
+		return this.player2;
 	}
 
 	setWhenPlayer1StatsUpdateCallback (callback) {
@@ -50,14 +65,45 @@ class Game {
 		this.whenEnemyAttacks = callback;
 	}
 
+	setWhenEnemyDiesCallback (callback) {
+
+		this.whenEnemyDies = callback;
+	}
+
+	setWhenPlayerHealsCallback (callback) {
+
+		this.whenPlayerHeals = callback;
+	}
+
 	setWhichPlayerToAttack () {
 
 		let rand = Math.random();
 		if (rand < 0.5) {
-			this.whichPlayerToAttack = this.player1;
+			this.whichPlayerToAttack = this.getPlayer1();
 		} else {
-			this.whichPlayerToAttack = this.player2;
+			this.whichPlayerToAttack = this.getPlayer2();
 		}
+	}
+
+	setWhichPlayerToHeal (playerToHeal) {
+
+		this.whichPlayerToHeal = playerToHeal;
+	}
+
+	getWhichPlayerToHeal () {
+
+		return this.whichPlayerToHeal;
+	}
+
+	playerHeal () {
+
+		this.getWhichPlayerToHeal().heal(this.getCurrentTurnPlayer());
+
+		this.updateCharacterIcons();
+		this.whenPlayerHeals();
+		this.afterHealButtonClicked();
+		this.setCurrentTurnPlayer();
+		this.whenCurrentPlayerChanges();
 	}
 
 	getWhichPlayerToAttack () {
@@ -77,12 +123,12 @@ class Game {
 
 	setCurrentTurnPlayer () {
 
-		if (this.getCurrentTurnPlayer() === this.player1) {
-			this.currentTurnPlayer = this.player2;
-		} else if (this.getCurrentTurnPlayer() === this.player2) {
-			this.currentTurnPlayer = this.enemy;
+		if (this.getCurrentTurnPlayer() === this.getPlayer1()) {
+			this.currentTurnPlayer = this.getPlayer2();
+		} else if (this.getCurrentTurnPlayer() === this.getPlayer2()) {
+			this.currentTurnPlayer = this.getEnemy();
 		} else {
-			this.currentTurnPlayer = this.player1;
+			this.currentTurnPlayer = this.getPlayer1();
 		}
 	}
 
@@ -93,24 +139,49 @@ class Game {
 
 	updateCharacterIcons () {
 
-		this.whenPlayer1StatsUpdate(this.player1);
-		this.whenPlayer2StatsUpdate(this.player2);
-		this.whenEnemyStatsUpdate(this.enemy);
+		this.whenPlayer1StatsUpdate(this.getPlayer1());
+		this.whenPlayer2StatsUpdate(this.getPlayer2());
+		this.whenEnemyStatsUpdate(this.getEnemy());
+	}
+
+	checkEnemyhp () {
+
+		return (!(this.getEnemy().getCurrenthp() > 0));
 	}
 
 	playerAttack () {
 
 		if (this.getCurrentTurnPlayer() != this.getEnemy()) {
 
-			this.enemy.attack(this.getCurrentTurnPlayer()); 
+			this.getEnemy().attack(this.getCurrentTurnPlayer()); 
 			this.whenPlayerAttacks();
 			this.updateCharacterIcons();
+			if (this.checkEnemyhp()) {
+				this.whenEnemyDies();
+				return;
+			}
 			this.setCurrentTurnPlayer();
 			this.whenCurrentPlayerChanges();
+			
 		} else {
 
 			this.enemyAttack();
 		}
+	}
+
+	setWhenHealButtonClickedCallback (callback) {
+
+		this.whenHealButtonClicked = callback;
+	}
+
+	setAfterHealButtonClickedCallback (callback) {
+
+		this.afterHealButtonClicked = callback;
+	}
+
+	whenHealButtonIsClicked () {
+
+		this.whenHealButtonClicked();
 	}
 
 	enemyAttack () {
@@ -158,7 +229,23 @@ class Game {
 	getAttackButtonHTML () {
 
 		return `
-			<button id="attackButton">Attack!</button>
+		<button id="attackButton">Attack</button>
+		`
+	}
+
+	getHealButtonHTML () {
+
+		return `
+		<button id="healButton">Heal</button>
+		`
+	}
+
+	getWhichPlayerToHealHTML () {
+
+		return `
+		<p>Who to heal?</p>
+		<button id="healPlayer1">${this.getPlayer1().getName()}</button>
+		<button id="healPlayer2">${this.getPlayer2().getName()}</button>
 		`
 	}
 
@@ -167,6 +254,12 @@ class Game {
 		return `
 		<li>${this.getCurrentTurnPlayer().getName()} attacks ${this.getEnemy().getName()} for ${this.getEnemy().calculateAttackDamage(this.getCurrentTurnPlayer())} points. 
 		`
+	}
+
+	getPlayerHealDetailsHTML () {
+
+		return `
+		<li>${this.getCurrentTurnPlayer().getName()} heals ${this.getWhichPlayerToHeal().getName()} for ${this.getCurrentTurnPlayer().calculateHealAmount()} points.`
 	}
 
 	getEnemyAttackDetailsHTML () {
@@ -179,7 +272,14 @@ class Game {
 	getCurrentPlayerTurnHTML () {
 		
 		return `
-			<li>It's ${this.getCurrentTurnPlayer().getName()}'s turn.</li>
+		<li>It's ${this.getCurrentTurnPlayer().getName()}'s turn.</li>
 		`
 	} 
+
+	getEnemyHasDiedHTML () {
+
+		return `
+		<li>${this.getEnemy().getName()} has died.</li>
+		`
+	}
 }

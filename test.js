@@ -52,6 +52,14 @@ function createGame () {
 
 
 
+	const updateGameLogWithPlayerHealDetails = function () {
+
+		document.getElementById("gameLog").innerHTML = 
+		(document.getElementById("gameLog").innerHTML + newGame.getPlayerHealDetailsHTML());
+	}
+	newGame.setWhenPlayerHealsCallback(updateGameLogWithPlayerHealDetails);
+
+
 
 	const updateGameLogWithEnemyAttackDetails = function () {
 
@@ -61,41 +69,57 @@ function createGame () {
 	newGame.setWhenEnemyAttacksCallback(updateGameLogWithEnemyAttackDetails);
 
 
+
+	const updateGameLogWhenEnemyDies = function () {
+
+		document.getElementById("gameLog").innerHTML = 
+		(document.getElementById("gameLog").innerHTML + newGame.getEnemyHasDiedHTML());
+	}
+	newGame.setWhenEnemyDiesCallback(updateGameLogWhenEnemyDies);
+
 	newGame.createEnemy("Dragon");
 
 
 
-	
-	document.body.innerHTML = newGame.getGameBuildHTML();
+	const displayOptionMenu = function () {
 
+		document.getElementById("optionsContainer").innerHTML = newGame.getWhichPlayerToHealHTML();	
+
+		document.getElementById("healPlayer1").addEventListener('click', function () {
+		newGame.setWhichPlayerToHeal(newGame.getPlayer1());
+		newGame.playerHeal();
+		})		
+		
+		document.getElementById("healPlayer2").addEventListener('click', function () {
+		newGame.setWhichPlayerToHeal(newGame.getPlayer2());
+		newGame.playerHeal();
+		})	
+	}
+
+	const removeOptionMenu = function () {
+
+		document.getElementById("optionsContainer").innerHTML = "";	
+	}
+
+	newGame.setAfterHealButtonClickedCallback(removeOptionMenu);
+		
+	document.body.innerHTML = newGame.getGameBuildHTML();
 
 	document.getElementById("gameLog").innerHTML = newGame.getCurrentPlayerTurnHTML();
 
-	document.getElementById("controlsContainer").innerHTML = newGame.getAttackButtonHTML();
+	document.getElementById("controlsContainer").innerHTML = newGame.getAttackButtonHTML() + newGame.getHealButtonHTML();
 
 	document.getElementById("attackButton").onclick = newGame.playerAttack.bind(newGame);
 
-newGame.updateCharacterIcons();
+	document.getElementById("healButton").addEventListener('click', function () {
+		newGame.setWhenHealButtonClickedCallback(displayOptionMenu);
+		newGame.whenHealButtonIsClicked();
+	})
+	
+	newGame.updateCharacterIcons();
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-/*function updateGameLogWithAttackDetails () {
-
-	document.getElementById("gameLog").innerHTML = 
-	(document.getElementById("gameLog").innerHTML + newGame.getAttackDetailsHTML());
-}
-*/
 
 
 function test () {

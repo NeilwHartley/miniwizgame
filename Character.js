@@ -1,10 +1,13 @@
 class Character {
 
-	static strengthMulti = 1;
-	static defenceMulti = 0.75;
+	static strengthMulti = 2;
+	static defenceMulti = 1;
 	static hpMulti = 15;
 	static healMulti = 0.2;
 	static expDivider = 10;
+	name = null;
+	currenthp = null;
+	exp = null;
 	name = null;
 
 	constructor (playerInput) {
@@ -80,6 +83,10 @@ class Character {
 
 			this.currenthp = maxhp;
 		
+		} else if (hp < 0) {
+
+			this.currenthp = 0;
+
 		} else {
 
 			this.currenthp = hp;
@@ -93,6 +100,11 @@ class Character {
 		return attackDamage;
 	}
 
+	calculateHealAmount () {
+
+		let healAmount = this.getStrengthStat() * Character.healMulti;
+		return healAmount;
+	}
 
 	attack (attackingCharacter) {
 
@@ -135,8 +147,3 @@ class Character {
 		`
 	}
 }
-
-	Character.prototype.currenthp = null;
-	Character.prototype.exp = null;
-	Character.prototype.name = null;
-
